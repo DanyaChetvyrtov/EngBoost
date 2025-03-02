@@ -13,7 +13,7 @@ public class JsonItem {
     @JsonProperty("fl")
     private String functionalLabel;
     @JsonProperty("def")
-    private List<DefinitionItem> definition;
+    private List<DefinitionItem> definitions;
     @JsonProperty("shortdef")
     private List<String> shortDefinitions;
 
@@ -33,12 +33,12 @@ public class JsonItem {
         this.functionalLabel = functionalLabel;
     }
 
-    public List<DefinitionItem> getDefinition() {
-        return definition;
+    public List<DefinitionItem> getDefinitions() {
+        return definitions;
     }
 
-    public void setDefinition(List<DefinitionItem> definition) {
-        this.definition = definition;
+    public void setDefinitions(List<DefinitionItem> definitions) {
+        this.definitions = definitions;
     }
 
     public List<String> getShortDefinitions() {
@@ -47,5 +47,15 @@ public class JsonItem {
 
     public void setShortDefinitions(List<String> shortDefinitions) {
         this.shortDefinitions = shortDefinitions;
+    }
+
+    @Override
+    public String toString() {
+        return "JsonItem{" +
+                "meta=" + meta +
+                ", functionalLabel='" + functionalLabel + '\'' +
+                ", definitions=" + definitions +
+                ", shortDefinitions=" + shortDefinitions +
+                '}';
     }
 }

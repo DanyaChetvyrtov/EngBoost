@@ -1,6 +1,7 @@
 package app.first.myEng.engBoost.controller;
 
 import app.first.myEng.engBoost.api.merriamwebster.model.WordInfo;
+import app.first.myEng.engBoost.api.merriamwebster.model.exception.FailToParseWord;
 import app.first.myEng.engBoost.service.TestService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ public class TestController {
     }
 
     @GetMapping("/test/{word}")
-    public ResponseEntity<WordInfo> getWordInfo(@PathVariable("word") String word) throws JsonProcessingException {
+    public ResponseEntity<WordInfo> getWordInfo(@PathVariable("word") String word) throws FailToParseWord {
         return new ResponseEntity<>(testService.getWordInfo(word), HttpStatus.OK);
     }
 

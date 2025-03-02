@@ -8,7 +8,7 @@ public class WordInfo {
     private String word;
     private Meta wordMeta;
     private String wordType;
-    private SenseItem senseItem;
+    private List<SenseItem> senseItems;
     private List<String> shortDef;
 
     public WordInfo() {
@@ -53,11 +53,11 @@ public class WordInfo {
         this.shortDef = shortDef;
     }
 
-    public SenseItem getSenseItem() {
-        return senseItem;
+    public List<SenseItem> getSenseItems() {
+        return senseItems;
     }
 
-    public void setSenseItem(SenseItem senseItem) {
-        this.senseItem = senseItem;
+    public void setSenseItems(List<SenseItem> senseItems) {
+        this.senseItems = senseItems;
     }
 }

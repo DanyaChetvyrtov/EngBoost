@@ -6,8 +6,17 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Meta {
+    private String id;
     private String section;
     private List<String> stems;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getSection() {
         return section;
@@ -28,6 +37,7 @@ public class Meta {
     @Override
     public String toString() {
         return "Meta{" +
+                "id='" + id + '\'' +
                 ", section='" + section + '\'' +
                 ", stems=" + stems +
                 '}';

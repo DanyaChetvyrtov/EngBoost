@@ -1,8 +1,6 @@
 package app.first.myEng.engBoost.api.merriamwebster.service;
 
 import app.first.myEng.engBoost.api.merriamwebster.constants.ApiProps;
-import app.first.myEng.engBoost.api.merriamwebster.utils.WordParser;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -21,7 +19,7 @@ public class MerriamWebsterService {
     public String fetchWordData(String word) {
         return restTemplate.getForObject(
                 MessageFormat.format("{0}/{1}?key={2}",
-                        apiProps.getUrl(), word, apiProps.getApi_key()), String.class
+                        apiProps.getUrl(), word, apiProps.getApiKey()), String.class
         );
     }
 }

@@ -21,7 +21,5 @@ public class DefinitionItem {
         this.senseSequence = senseSequence;
     }
 
-    public String getTest() {
-        return "Test field from DefinitionItem";
-    }
+
 }

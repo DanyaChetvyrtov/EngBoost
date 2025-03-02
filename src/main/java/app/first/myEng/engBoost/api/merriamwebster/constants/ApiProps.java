@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "api.properties")
 public class ApiProps {
     private String url;
-    private String api_key;
+    private String apiKey;
 
     public String getUrl() {
         return url;
@@ -17,11 +17,11 @@ public class ApiProps {
         this.url = url;
     }
 
-    public String getApi_key() {
-        return api_key;
+    public String getApiKey() {
+        return apiKey;
     }
 
-    public void setApi_key(String api_key) {
-        this.api_key = api_key;
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
     }
 }
