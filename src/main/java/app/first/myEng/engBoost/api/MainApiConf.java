@@ -1,4 +1,4 @@
-package app.first.myEng.engBoost.api.merriamwebster.config;
+package app.first.myEng.engBoost.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
@@ -6,8 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
 @Configuration
-public class ApiConf {
-
+public class MainApiConf {
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();

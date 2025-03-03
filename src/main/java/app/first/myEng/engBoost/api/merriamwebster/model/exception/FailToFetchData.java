@@ -2,8 +2,8 @@ package app.first.myEng.engBoost.api.merriamwebster.model.exception;
 
 import org.springframework.web.client.RestClientException;
 
-public class FailToFetchWord extends RestClientException {
-    public FailToFetchWord(String message) {
+public class FailToFetchData extends RestClientException {
+    public FailToFetchData(String message) {
         super(message);
     }
 }

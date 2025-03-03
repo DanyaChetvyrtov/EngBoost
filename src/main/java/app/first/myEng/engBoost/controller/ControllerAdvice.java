@@ -1,7 +1,7 @@
 package app.first.myEng.engBoost.controller;
 
-import app.first.myEng.engBoost.api.merriamwebster.model.exception.FailToFetchWord;
-import app.first.myEng.engBoost.api.merriamwebster.model.exception.FailToParseWord;
+import app.first.myEng.engBoost.api.merriamwebster.model.exception.FailToFetchData;
+import app.first.myEng.engBoost.api.merriamwebster.model.exception.FailToParseData;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,20 +21,21 @@ public class ControllerAdvice {
 
     @ExceptionHandler(MismatchedInputException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String MismatchedInputExceptionHandler() {
+    public String MismatchedInputExceptionHandler(MismatchedInputException e) {
+        e.printStackTrace();
         return "Bad request";
     }
 
-    @ExceptionHandler(FailToParseWord.class)
+    @ExceptionHandler(FailToParseData.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public String FailToParseWordHandler(FailToParseWord e) {
+    public String FailToParseWordHandler(FailToParseData e) {
         e.printStackTrace();
         return "Fail to parse word";
     }
 
-    @ExceptionHandler(FailToFetchWord.class)
+    @ExceptionHandler(FailToFetchData.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public String FailToFetchWordHandler(FailToFetchWord e) {
+    public String FailToFetchWordHandler(FailToFetchData e) {
         e.printStackTrace();
         return "Failed to fetch word data from API";
     }

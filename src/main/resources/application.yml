@@ -16,7 +16,14 @@ server:
 
 api:
   properties:
-    url:
-      ${MERRIAM_WEBSTER_URL}
-    api_key:
-      ${API_KEY}
+    merriam-webster:
+      url:
+        ${MERRIAM_WEBSTER_URL}
+      api_key:
+        ${MERRIAM_WEBSTER_API_KEY}
+
+    thesaurus:
+      url:
+        ${THESAURUS_URL}
+      api_key:
+        ${THESAURUS_API_KEY}

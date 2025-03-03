@@ -1,11 +1,11 @@
-package app.first.myEng.engBoost.api.merriamwebster.constants;
+package app.first.myEng.engBoost.api.apiNinja.thesaurus.constants;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties(prefix = "api.properties")
-public class ApiProps {
+@ConfigurationProperties(prefix = "api.properties.thesaurus")
+public class ThesaurusApiProps {
     private String url;
     private String apiKey;
 
