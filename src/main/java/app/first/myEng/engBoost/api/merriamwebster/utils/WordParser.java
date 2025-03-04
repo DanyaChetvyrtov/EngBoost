@@ -2,8 +2,10 @@ package app.first.myEng.engBoost.api.merriamwebster.utils;
 
 import app.first.myEng.engBoost.api.merriamwebster.model.JsonItem;
 import app.first.myEng.engBoost.api.merriamwebster.model.WordInfo;
+import app.first.myEng.engBoost.api.merriamwebster.model.definition.DefiningText;
 import app.first.myEng.engBoost.api.merriamwebster.model.definition.DefinitionItem;
 import app.first.myEng.engBoost.api.merriamwebster.model.definition.SenseItem;
+import app.first.myEng.engBoost.api.merriamwebster.model.definition.VisText;
 import app.first.myEng.engBoost.api.merriamwebster.model.exception.FailToParseData;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -24,37 +26,61 @@ public class WordParser {
     public WordInfo parse(String json, String word) throws JsonProcessingException {
         List<JsonItem> jsonItems;
         try {
-            jsonItems = objectMapper.readValue(json, new TypeReference<>() {
-            });
+            jsonItems = objectMapper.readValue(json, new TypeReference<>() {});
         } catch (JsonProcessingException e) {
             throw new FailToParseData(e.getMessage());
         }
 
+        // Find more appropriate jsonItem
         JsonItem mainJsonItem = jsonItems.stream()
                 .filter(item -> word.equals(item.getMeta().getId()))
                 .findFirst().orElse(jsonItems.getFirst());
 
         List<DefinitionItem> definitions = mainJsonItem.getDefinitions();
 
-        List<List<Object>> senseSequences = definitions.stream()
+        List<SenseItem> senseItems = definitions.stream()
                 .findFirst().map(DefinitionItem::getSenseSequence)
                 .orElse(Collections.emptyList()).stream().map(List::getFirst)
-                .toList();
+                .map(this::parseSenseItem).toList();
 
-        List<SenseItem> senseItems = senseSequences.stream().map(obj -> {
-            SenseItem senseItem = objectMapper.convertValue(obj.getLast(), SenseItem.class);
-            senseItem.setType((String) obj.getFirst());
-            return senseItem;
-        }).toList();
+        return new WordInfo.Builder()
+                .setWord(word)
+                .setWordMeta(mainJsonItem.getMeta())
+                .setWordType(mainJsonItem.getFunctionalLabel())
+                .setShortDef(mainJsonItem.getShortDefinitions())
+                .setSenseItems(senseItems)
+                .build();
+    }
 
-        WordInfo wordInfo = new WordInfo();
+    private DefiningText parseDefiningText(SenseItem senseItem) throws JsonProcessingException {
+        DefiningText definingText = new DefiningText();
+        senseItem.getDefiningTextBeforeMap().forEach(
+                unmappedDefText -> {
+                    if (unmappedDefText.getFirst().equals("text"))
+                        definingText.setText((String) unmappedDefText.getLast());
+                    else if (unmappedDefText.getFirst().equals("vis")) {
+                        List<VisText> visTexts = objectMapper.convertValue(
+                                unmappedDefText.getLast(), new TypeReference<>() {}
+                        );
+                        definingText.setVerbalIllustration(visTexts);
+                    }
+                }
+        );
+        return definingText;
+    }
 
-        wordInfo.setWord(word);
-        wordInfo.setWordMeta(mainJsonItem.getMeta());
-        wordInfo.setWordType(mainJsonItem.getFunctionalLabel());
-        wordInfo.setShortDef(mainJsonItem.getShortDefinitions());
-        wordInfo.setSenseItems(senseItems);
+    private SenseItem parseSenseItem(List<Object> obj) {
+        SenseItem senseItem = objectMapper.convertValue(obj.getLast(), SenseItem.class);
+        senseItem.setType((String) obj.getFirst());
 
-        return wordInfo;
+        DefiningText definingText = null;
+        try {
+            definingText = parseDefiningText(senseItem);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        senseItem.setDefiningTexts(definingText);
+        return senseItem;
     }
 }

@@ -27,7 +27,7 @@ public class TestController {
         return new ResponseEntity<>(testService.getWordInfo(word), HttpStatus.OK);
     }
 
-    @GetMapping("/test/synonyms/{word}")
+    @GetMapping("/test/{word}/synonyms")
     public ResponseEntity<WordSynonymsAntonyms> getWordSynonyms(@PathVariable("word") String word) throws JsonProcessingException {
         return new ResponseEntity<>(testService.getWordSynonymsAntonyms(word), HttpStatus.OK);
     }
