@@ -13,13 +13,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 
 @Service
-public class TestService {
+public class OuterApiService {
     private final WordParser wordParser;
     private final SynonymsAntonymsParser synonymsAntonymsParser;
     private final MerriamWebsterService merriamWebsterService;
     private final ThesaurusService thesaurusService;
 
-    public TestService(WordParser wordParser, SynonymsAntonymsParser synonymsAntonymsParser, MerriamWebsterService merriamWebsterService, ThesaurusService thesaurusService) {
+    public OuterApiService(WordParser wordParser, SynonymsAntonymsParser synonymsAntonymsParser, MerriamWebsterService merriamWebsterService, ThesaurusService thesaurusService) {
         this.wordParser = wordParser;
         this.synonymsAntonymsParser = synonymsAntonymsParser;
         this.merriamWebsterService = merriamWebsterService;

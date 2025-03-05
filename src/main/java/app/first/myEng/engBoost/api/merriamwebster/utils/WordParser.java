@@ -38,7 +38,8 @@ public class WordParser {
 
         List<DefinitionItem> definitions = mainJsonItem.getDefinitions();
 
-        List<SenseItem> senseItems = definitions.stream()
+        List<SenseItem> senseItems = definitions == null ? null :
+                definitions.stream()
                 .findFirst().map(DefinitionItem::getSenseSequence)
                 .orElse(Collections.emptyList()).stream().map(List::getFirst)
                 .map(this::parseSenseItem).toList();
@@ -73,7 +74,7 @@ public class WordParser {
         SenseItem senseItem = objectMapper.convertValue(obj.getLast(), SenseItem.class);
         senseItem.setType((String) obj.getFirst());
 
-        DefiningText definingText = null;
+        DefiningText definingText;
         try {
             definingText = parseDefiningText(senseItem);
         } catch (JsonProcessingException e) {
