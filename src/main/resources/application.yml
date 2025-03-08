@@ -5,6 +5,12 @@ spring:
     name:
       engBoost
 
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    deserialization:
+      adjust-dates-to-context-time-zone: true
+
   datasource:
     url: jdbc:postgresql://localhost:5432/${DB_NAME}
     driver-class-name: org.postgresql.Driver

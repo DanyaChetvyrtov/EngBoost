@@ -60,8 +60,8 @@ CREATE TABLE IF NOT EXISTS users
 CREATE TABLE IF NOT EXISTS user_statistic
 (
     user_id            INTEGER PRIMARY KEY REFERENCES users (id) ON DELETE CASCADE,
-    learning_time      BIGINT NOT NULL,
-    total_cards_amount INTEGER   NOT NULL DEFAULT 0 check ( total_cards_amount >= 0 )
+    learning_time      BIGINT  NOT NULL,
+    total_cards_amount INTEGER NOT NULL DEFAULT 0 check ( total_cards_amount >= 0 )
 );
 
 CREATE TABLE users_word_card
