@@ -48,7 +48,7 @@ public class WordCardService {
         wordTypeEntity = wordTypeEntityRepository.findByWordType(wordTypeEntity.getWordType())
                 .orElseThrow(() -> new RuntimeException("Word type not found"));
 
-        System.out.println(wordTypeEntity);
+//        System.out.println(wordTypeEntity);
         wordCard.setWordType(wordTypeEntity);
         wordCardToBeUpdated.setWordType(wordCard.getWordType());
         wordCardToBeUpdated.setDefinition(wordCard.getDefinition());
