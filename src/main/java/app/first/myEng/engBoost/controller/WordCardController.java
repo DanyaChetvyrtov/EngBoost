@@ -4,10 +4,7 @@ import app.first.myEng.engBoost.models.wordCard.WordCard;
 import app.first.myEng.engBoost.service.WordCardService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/v1/words")
@@ -23,4 +20,19 @@ public class WordCardController {
         return new ResponseEntity<>(wordCardService.getWordCard(word), HttpStatus.OK);
     }
 
+    @PostMapping
+    public ResponseEntity<WordCard> addWordCard(@RequestBody WordCard wordCard) {
+        return new ResponseEntity<>(wordCardService.create(wordCard), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<WordCard> updateWordCard(@RequestBody WordCard wordCard, @PathVariable("id") int id) {
+        return new ResponseEntity<>(wordCardService.update(wordCard, id), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<HttpStatus> deleteWordCard(@PathVariable("id") int id) {
+        wordCardService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

@@ -6,8 +6,8 @@ import jakarta.persistence.*;
 @Table(name = "stems")
 public class Stem {
     @Id
-    @GeneratedValue
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     @Column(name = "word")
     private String word;
 
