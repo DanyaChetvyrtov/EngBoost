@@ -1,11 +1,13 @@
 package app.first.myEng.engBoost.models.user;
 
+import app.first.myEng.engBoost.models.wordCard.WordCard;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -36,6 +38,9 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private List<WordCard> wordCardList;
 
     @PrePersist
     public void onCreate() {

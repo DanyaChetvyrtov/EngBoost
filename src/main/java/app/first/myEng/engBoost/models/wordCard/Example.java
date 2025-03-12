@@ -1,9 +1,15 @@
 package app.first.myEng.engBoost.models.wordCard;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "examples")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Example {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -11,36 +17,4 @@ public class Example {
 
     @Column(name = "example")
     private String example;
-
-    public Example() {
-    }
-
-    public Example(Integer id, String example) {
-        this.id = id;
-        this.example = example;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getExample() {
-        return example;
-    }
-
-    public void setExample(String example) {
-        this.example = example;
-    }
-
-    @Override
-    public String toString() {
-        return "Example{" +
-                "id=" + id +
-                ", example='" + example + '\'' +
-                '}';
-    }
 }

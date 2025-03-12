@@ -24,8 +24,8 @@ public class UserService {
     }
 
     @Transactional
-    public User update(User user, int id) {
-        var userDB = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+    public User update(User user) {
+        var userDB = userRepository.findById(user.getId()).orElseThrow(() -> new RuntimeException("User not found"));
 
         userDB.setFirstName(user.getFirstName());
         userDB.setLastName(user.getLastName());

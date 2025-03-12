@@ -1,7 +1,9 @@
 package app.first.myEng.engBoost.controller;
 
+import app.first.myEng.engBoost.dto.wordCard.WordCardDto;
 import app.first.myEng.engBoost.models.wordCard.WordCard;
 import app.first.myEng.engBoost.service.WordCardService;
+import app.first.myEng.engBoost.utils.mapper.WordCardMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,14 +12,17 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/v1/words")
 public class WordCardController {
     private final WordCardService wordCardService;
+    private final WordCardMapper wordCardMapper;
 
-    public WordCardController(WordCardService wordCardService) {
+    public WordCardController(WordCardService wordCardService, WordCardMapper wordCardMapper) {
         this.wordCardService = wordCardService;
+        this.wordCardMapper = wordCardMapper;
     }
 
     @GetMapping("/{word}")
-    public ResponseEntity<WordCard> getWordCard(@PathVariable("word") String word) {
-        return new ResponseEntity<>(wordCardService.getWordCard(word), HttpStatus.OK);
+    public ResponseEntity<WordCardDto> getWordCard(@PathVariable("word") String word) {
+        WordCard wordCard = wordCardService.getWordCard(word);
+        return new ResponseEntity<>(wordCardMapper.toDto(wordCard), HttpStatus.OK);
     }
 
     @PostMapping

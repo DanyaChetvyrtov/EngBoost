@@ -23,23 +23,23 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> getUser(@PathVariable("id") int id) {
         System.out.println(userService.getUserById(id));
-        UserDto userDto = userMapper.INSTANCE.toDto(userService.getUserById(id));
+        UserDto userDto = userMapper.toDto(userService.getUserById(id));
         System.out.println(userDto);
         return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<UserDto> createUser(@RequestBody @Valid UserDto userDto) {
-        System.out.println(userDto);
-        User user = userMapper.INSTANCE.toEntity(userDto);
-        System.out.println(user);
-        userDto = userMapper.INSTANCE.toDto(userService.create(user));
+        User user = userMapper.toEntity(userDto);
+        userDto = userMapper.toDto(userService.create(user));
         return new ResponseEntity<>(userDto, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable("id") int id) {
-        return new ResponseEntity<>(userService.update(user, id), HttpStatus.OK);
+    @PutMapping
+    public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto) {
+        User user = userMapper.toEntity(userDto);
+        userDto = userMapper.toDto(userService.update(user));
+        return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

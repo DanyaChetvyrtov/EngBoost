@@ -1,45 +1,19 @@
 package app.first.myEng.engBoost.models.wordCard;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "stems")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Stem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(name = "word")
     private String word;
-
-    public Stem() {
-    }
-
-    public Stem(int id, String word) {
-        this.id = id;
-        this.word = word;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getWord() {
-        return word;
-    }
-
-    public void setWord(String word) {
-        this.word = word;
-    }
-
-    @Override
-    public String toString() {
-        return "Stem{" +
-                "id=" + id +
-                ", word=" + word +
-                '}';
-    }
 }
