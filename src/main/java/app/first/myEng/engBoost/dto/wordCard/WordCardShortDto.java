@@ -8,27 +8,17 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonPropertyOrder({
-        "id", "word", "definition",
-        "wordType", "stems",
-        "examples", "shortDefinitions"
+        "id", "word", "definition", "wordType"
 })
-public class WordCardDto {
+public class WordCardShortDto {
     private Integer id;
     private String word;
     private String definition;
 
     @JsonDeserialize(using = WordTypeEntityDeserializer.class)
     private WordTypeEntity wordType;
-
-    private List<StemDto> stems;
-    private List<ExampleDto> examples;
-    private List<ShortDefinitionDto> shortDefinitions;
-
 }

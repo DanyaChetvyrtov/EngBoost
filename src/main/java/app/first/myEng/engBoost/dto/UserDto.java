@@ -1,7 +1,5 @@
 package app.first.myEng.engBoost.dto;
 
-import app.first.myEng.engBoost.dto.wordCard.WordCardDto;
-import app.first.myEng.engBoost.models.wordCard.WordCard;
 import app.first.myEng.engBoost.validation.OnCreate;
 import app.first.myEng.engBoost.validation.OnUpdate;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -12,8 +10,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
-
-import java.util.List;
 
 
 @Data
@@ -46,6 +42,4 @@ public class UserDto {
     @NotNull(message = "Password confirmation can't be null", groups = OnCreate.class)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String passwordConfirmation;
-
-    private List<WordCardDto> wordCardList;
 }

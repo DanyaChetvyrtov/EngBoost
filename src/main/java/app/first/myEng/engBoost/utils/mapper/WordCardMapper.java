@@ -1,6 +1,7 @@
 package app.first.myEng.engBoost.utils.mapper;
 
-import app.first.myEng.engBoost.dto.wordCard.WordCardDto;
+import app.first.myEng.engBoost.dto.wordCard.WordCardClientDto;
+import app.first.myEng.engBoost.dto.wordCard.WordCardExtendedDto;
 import app.first.myEng.engBoost.models.wordCard.WordCard;
 import org.mapstruct.Mapper;
 
@@ -8,13 +9,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Mapper(componentModel = "spring")
-public interface WordCardMapper {
+@Mapper(componentModel = "spring", uses = {UserMapper.class})
+public interface WordCardMapper extends MainMapper<WordCard, WordCardExtendedDto> {
 
-    WordCardDto toDto(WordCard wordCard);
-    WordCard toEntity(WordCardDto wordCardDto);
+    WordCardExtendedDto toDto(WordCard wordCard);
 
-    default List<WordCardDto> toDtoList(List<WordCard> wordCards) {
+    WordCard toEntity(WordCardExtendedDto wordCardExtendedDto);
+
+    WordCard toEntity(WordCardClientDto wordCardDto);
+
+    default List<WordCardExtendedDto> toDtoList(List<WordCard> wordCards) {
         if (wordCards == null) {
             return Collections.emptyList();
         }
@@ -22,4 +26,5 @@ public interface WordCardMapper {
                 .map(this::toDto)
                 .collect(Collectors.toList());
     }
+
 }

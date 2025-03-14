@@ -4,9 +4,11 @@ import app.first.myEng.engBoost.dto.UserDto;
 import app.first.myEng.engBoost.models.user.User;
 import app.first.myEng.engBoost.service.UserService;
 import app.first.myEng.engBoost.utils.mapper.UserMapper;
-import jakarta.validation.Valid;
+import app.first.myEng.engBoost.validation.OnCreate;
+import app.first.myEng.engBoost.validation.OnUpdate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,21 +24,19 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> getUser(@PathVariable("id") int id) {
-        System.out.println(userService.getUserById(id));
         UserDto userDto = userMapper.toDto(userService.getUserById(id));
-        System.out.println(userDto);
         return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<UserDto> createUser(@RequestBody @Valid UserDto userDto) {
+    public ResponseEntity<UserDto> createUser(@RequestBody @Validated(OnCreate.class) UserDto userDto) {
         User user = userMapper.toEntity(userDto);
         userDto = userMapper.toDto(userService.create(user));
         return new ResponseEntity<>(userDto, HttpStatus.CREATED);
     }
 
     @PutMapping
-    public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto) {
+    public ResponseEntity<UserDto> updateUser(@RequestBody @Validated(OnUpdate.class) UserDto userDto) {
         User user = userMapper.toEntity(userDto);
         userDto = userMapper.toDto(userService.update(user));
         return new ResponseEntity<>(userDto, HttpStatus.OK);

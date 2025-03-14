@@ -8,7 +8,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ShortDefinitionDto {
-    private Integer id;
-
     private String definition;
 }

@@ -1,5 +1,6 @@
 package app.first.myEng.engBoost.dto.wordCard;
 
+import app.first.myEng.engBoost.dto.UserDto;
 import app.first.myEng.engBoost.models.wordCard.WordTypeEntity;
 import app.first.myEng.engBoost.utils.WordTypeEntityDeserializer;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -10,16 +11,15 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonPropertyOrder({
         "id", "word", "definition",
-        "wordType", "stems",
+        "cardOwner", "wordType", "stems",
         "examples", "shortDefinitions"
 })
-public class WordCardDto {
+public class WordCardExtendedDto {
     private Integer id;
     private String word;
     private String definition;
@@ -31,4 +31,5 @@ public class WordCardDto {
     private List<ExampleDto> examples;
     private List<ShortDefinitionDto> shortDefinitions;
 
+    private UserDto cardOwner;
 }

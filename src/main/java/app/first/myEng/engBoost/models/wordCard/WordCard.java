@@ -1,5 +1,6 @@
 package app.first.myEng.engBoost.models.wordCard;
 
+import app.first.myEng.engBoost.models.user.User;
 import app.first.myEng.engBoost.utils.WordTypeEntityDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
@@ -20,13 +21,13 @@ public class WordCard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(name = "word")
+    @Column(name = "word", nullable = false)
     private String word;
-    @Column(name = "definition")
+    @Column(name = "definition", nullable = false)
     private String definition;
 
     @ManyToOne
-    @JoinColumn(name = "word_type")
+    @JoinColumn(name = "word_type", nullable = false)
     @JsonDeserialize(using = WordTypeEntityDeserializer.class)
     private WordTypeEntity wordType;
 
@@ -35,6 +36,12 @@ public class WordCard {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User cardOwner;
+
+    @Transient
+    private Integer userId;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "word_card_id")
