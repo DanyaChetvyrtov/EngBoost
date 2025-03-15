@@ -26,6 +26,21 @@ spring:
     change-log: db/changelog/db.changelog-master.yml
 
 
+logging:
+  level:
+    root: INFO
+    org:
+      springframework:
+        web: DEBUG
+  file:
+    name: logs/app.log
+  pattern:
+    console: "%clr(%d{yyyy-MM-dd HH:mm:ss}){faint} %clr(%-5level) %clr(%logger{36}){cyan} %clr(-){faint} %clr(%msg%n){blue}"
+  logback:
+    rollingpolicy:
+      file-name-pattern: logs/app.%d{yyyy-MM-dd}.log
+      max-history: 7
+
 server:
   port:
     8014

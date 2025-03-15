@@ -5,6 +5,8 @@ import app.first.myEng.engBoost.api.merriamwebster.model.exception.FailToParseDa
 import app.first.myEng.engBoost.models.exception.ExceptionBody;
 import app.first.myEng.engBoost.models.exception.ResourceNotFound;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -16,16 +18,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
-public class ControllerAdvice {
+public class GlobalExceptionHandler {
+    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
     @ExceptionHandler(ResourceNotFound.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ExceptionBody handleResourceNotFound(ResourceNotFound e) {
+        logger.error("Ресурс не найден. ", e);
         return new ExceptionBody(e.getMessage());
     }
 
     @ExceptionHandler(MismatchedInputException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ExceptionBody handleMismatchedInputException(MismatchedInputException e) {
+        logger.error("Ошибка: ", e);
         return new ExceptionBody(e.getMessage());
     }
 
@@ -38,6 +44,9 @@ public class ControllerAdvice {
         exceptionBody.setErrors(fieldErrors.stream().collect(
                 Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage)
         ));
+        logger.error("Ошибка валидации: ", e);
+        exceptionBody.getErrors().forEach(
+                (key, value) -> logger.warn("Ошибка валидации поля '{}' : '{}'", key, value));
 
         return exceptionBody;
     }
