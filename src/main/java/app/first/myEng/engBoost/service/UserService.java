@@ -1,5 +1,6 @@
 package app.first.myEng.engBoost.service;
 
+import app.first.myEng.engBoost.models.exception.ResourceNotFound;
 import app.first.myEng.engBoost.models.user.User;
 import app.first.myEng.engBoost.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,8 @@ public class UserService {
     }
 
     public User getUserById(int id) {
-        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFound("User not found"));
     }
 
     @Transactional
@@ -25,7 +27,8 @@ public class UserService {
 
     @Transactional
     public User update(User user) {
-        var userDB = userRepository.findById(user.getId()).orElseThrow(() -> new RuntimeException("User not found"));
+        var userDB = userRepository.findById(user.getId())
+                .orElseThrow(() -> new ResourceNotFound("User with such id does not exist"));
 
         userDB.setFirstName(user.getFirstName());
         userDB.setLastName(user.getLastName());
@@ -39,6 +42,7 @@ public class UserService {
 
     @Transactional
     public void delete(int id) {
+        getUserById(id); // для проверки, что пользователь с таким id сущ
         userRepository.deleteById(id);
     }
 }

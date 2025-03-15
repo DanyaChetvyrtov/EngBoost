@@ -1,5 +1,6 @@
 package app.first.myEng.engBoost.service;
 
+import app.first.myEng.engBoost.models.exception.ResourceNotFound;
 import app.first.myEng.engBoost.models.user.User;
 import app.first.myEng.engBoost.models.wordCard.WordCard;
 import app.first.myEng.engBoost.models.wordCard.WordTypeEntity;
@@ -26,7 +27,7 @@ public class WordCardService {
     }
 
     public WordCard getWordCard(String word) {
-        return wordCardRepository.findByWord(word).orElseThrow(() -> new RuntimeException("Word not found"));
+        return wordCardRepository.findByWord(word).orElseThrow(() -> new ResourceNotFound("Word not found"));
     }
 
     @Transactional
@@ -35,7 +36,7 @@ public class WordCardService {
 
         // Проверяем есть ли в базе такой тип
         wordTypeEntity = wordTypeEntityRepository.findByWordType(wordTypeEntity.getWordType())
-                .orElseThrow(() -> new RuntimeException("Word type not found"));
+                .orElseThrow(() -> new ResourceNotFound("Word type not found"));
 
         User owner = userService.getUserById(wordCard.getUserId());
 
@@ -49,21 +50,17 @@ public class WordCardService {
     public WordCard update(WordCard wordCard) {
         if(wordCard == null) throw new IllegalArgumentException("Word card must be not null");
         WordCard wordCardToBeUpdated = wordCardRepository.findById(wordCard.getId())
-                .orElseThrow(() -> new RuntimeException("Word not found"));
+                .orElseThrow(() -> new ResourceNotFound("Word not found"));
 
         User owner = userService.getUserById(wordCard.getUserId());
-
-        System.out.println(wordCard);
-        System.out.println(owner);
 
         wordCardToBeUpdated.setWord(wordCard.getWord());
         wordCardToBeUpdated.setCardOwner(owner);
 
         WordTypeEntity wordTypeEntity = wordCard.getWordType();
         wordTypeEntity = wordTypeEntityRepository.findByWordType(wordTypeEntity.getWordType())
-                .orElseThrow(() -> new RuntimeException("Word type not found"));
+                .orElseThrow(() -> new ResourceNotFound("Word type not found"));
 
-//        System.out.println(wordTypeEntity);
         wordCard.setWordType(wordTypeEntity);
         wordCardToBeUpdated.setWordType(wordCard.getWordType());
         wordCardToBeUpdated.setDefinition(wordCard.getDefinition());
