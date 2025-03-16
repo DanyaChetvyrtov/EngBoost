@@ -27,13 +27,14 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> getUser(@PathVariable("id") int id) {
-        logger.info("Получен запрос на получение пользователя с id: {}", id);
+        logger.info("GET request for user with id '{}' has been received.", id);
         UserDto userDto = userMapper.toDto(userService.getUserById(id));
         return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<UserDto> createUser(@RequestBody @Validated(OnCreate.class) UserDto userDto) {
+        logger.info("POST request for user with '{}' username has been received.", userDto.getUsername());
         User user = userMapper.toEntity(userDto);
         userDto = userMapper.toDto(userService.create(user));
         return new ResponseEntity<>(userDto, HttpStatus.CREATED);
@@ -41,6 +42,7 @@ public class UserController {
 
     @PutMapping
     public ResponseEntity<UserDto> updateUser(@RequestBody @Validated(OnUpdate.class) UserDto userDto) {
+        logger.info("PUT request for user with '{}' username has been received.", userDto.getUsername());
         User user = userMapper.toEntity(userDto);
         userDto = userMapper.toDto(userService.update(user));
         return new ResponseEntity<>(userDto, HttpStatus.OK);
@@ -48,6 +50,7 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") int id) {
+        logger.info("DELETE request for user with id '{}' has been received.", id);
         userService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

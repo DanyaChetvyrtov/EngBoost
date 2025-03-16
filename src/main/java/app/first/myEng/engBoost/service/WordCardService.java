@@ -6,6 +6,8 @@ import app.first.myEng.engBoost.models.wordCard.WordCard;
 import app.first.myEng.engBoost.models.wordCard.WordTypeEntity;
 import app.first.myEng.engBoost.repository.WordCardRepository;
 import app.first.myEng.engBoost.repository.WordTypeEntityRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +20,7 @@ public class WordCardService {
     private final WordCardRepository wordCardRepository;
     private final WordTypeEntityRepository wordTypeEntityRepository;
     private final UserService userService;
-
+    private final static Logger logger = LoggerFactory.getLogger(WordCardService.class);
 
     public WordCardService(WordCardRepository wordCardRepository, WordTypeEntityRepository wordTypeEntityRepository, UserService userService) {
         this.wordCardRepository = wordCardRepository;
@@ -35,12 +37,13 @@ public class WordCardService {
         WordTypeEntity wordTypeEntity = wordCard.getWordType();
 
         // Проверяем есть ли в базе такой тип
+        logger.info("Checking if wordType exists: {}", wordTypeEntity.getWordType());
         wordTypeEntity = wordTypeEntityRepository.findByWordType(wordTypeEntity.getWordType())
                 .orElseThrow(() -> new ResourceNotFound("Word type not found"));
 
         User owner = userService.getUserById(wordCard.getUserId());
+        logger.info("Creating wordCard. For user with username '{}'", owner.getUsername());
 
-        System.out.println(wordCard.getId());
         wordCard.setCardOwner(owner);
         wordCard.setWordType(wordTypeEntity);
         return wordCardRepository.save(wordCard);
@@ -48,12 +51,14 @@ public class WordCardService {
 
     @Transactional
     public WordCard update(WordCard wordCard) {
-        if(wordCard == null) throw new IllegalArgumentException("Word card must be not null");
+
+        logger.info("Checking the existence of wordCard with id '{}'", wordCard.getId());
         WordCard wordCardToBeUpdated = wordCardRepository.findById(wordCard.getId())
                 .orElseThrow(() -> new ResourceNotFound("Word not found"));
 
         User owner = userService.getUserById(wordCard.getUserId());
 
+        logger.info("Updating wordCard. For user with username '{}'", owner.getUsername());
         wordCardToBeUpdated.setWord(wordCard.getWord());
         wordCardToBeUpdated.setCardOwner(owner);
 
@@ -79,10 +84,12 @@ public class WordCardService {
 
     @Transactional
     public void delete(int id) {
+        logger.info("Deleting wordCard. id: {}", id);
         wordCardRepository.deleteById(id);
     }
 
-    public List<WordCard> getUserCards(String username){
+    public List<WordCard> getUserCards(String username) {
+        logger.info("Receiving '{}' cards. ", username);
         return wordCardRepository.findCardsByCardOwnerUsername(username).orElse(new ArrayList<>());
     }
 }

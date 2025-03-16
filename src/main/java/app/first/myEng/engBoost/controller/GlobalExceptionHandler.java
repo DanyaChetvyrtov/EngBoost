@@ -24,14 +24,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ResourceNotFound.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ExceptionBody handleResourceNotFound(ResourceNotFound e) {
-        logger.error("Ресурс не найден. ", e);
+        logger.error("Resource not found. ", e);
         return new ExceptionBody(e.getMessage());
     }
 
     @ExceptionHandler(MismatchedInputException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ExceptionBody handleMismatchedInputException(MismatchedInputException e) {
-        logger.error("Ошибка: ", e);
+        logger.error("Error: ", e);
         return new ExceptionBody(e.getMessage());
     }
 
@@ -44,9 +44,9 @@ public class GlobalExceptionHandler {
         exceptionBody.setErrors(fieldErrors.stream().collect(
                 Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage)
         ));
-        logger.error("Ошибка валидации: ", e);
+        logger.error("Validation error: ", e);
         exceptionBody.getErrors().forEach(
-                (key, value) -> logger.warn("Ошибка валидации поля '{}' : '{}'", key, value));
+                (key, value) -> logger.warn("field '{}' : '{}'", key, value));
 
         return exceptionBody;
     }
@@ -54,20 +54,21 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(FailToParseData.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ExceptionBody handleFailToParseWord(FailToParseData e) {
-        e.printStackTrace();
+        logger.error("Error during word parsing: ", e);
         return new ExceptionBody(e.getMessage());
     }
 
     @ExceptionHandler(FailToFetchData.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ExceptionBody handleFailToFetchWord(FailToFetchData e) {
-        e.printStackTrace();
+        logger.error("Word wasn't found: ", e);
         return new ExceptionBody(e.getMessage());
     }
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ExceptionBody handleException(Exception e) {
+        logger.error("Unknown error: ", e);
         return new ExceptionBody("Internal server error");
     }
 }
