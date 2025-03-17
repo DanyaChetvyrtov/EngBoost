@@ -58,3 +58,9 @@ api:
         ${THESAURUS_URL}
       api_key:
         ${THESAURUS_API_KEY}
+
+security:
+  jwt:
+    secret: ${JWT_SECRET}
+    accessDuration: ${JWT_ACCESS_DURATION}
+    refreshDuration: ${JWT_REFRESH_DURATION}

@@ -4,7 +4,6 @@ import app.first.myEng.engBoost.dto.user.UserDto;
 import app.first.myEng.engBoost.models.user.User;
 import app.first.myEng.engBoost.service.UserService;
 import app.first.myEng.engBoost.utils.mapper.UserMapper;
-import app.first.myEng.engBoost.validation.OnCreate;
 import app.first.myEng.engBoost.validation.OnUpdate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,14 +29,6 @@ public class UserController {
         logger.info("GET request for user with id '{}' has been received.", id);
         UserDto userDto = userMapper.toDto(userService.getUserById(id));
         return new ResponseEntity<>(userDto, HttpStatus.OK);
-    }
-
-    @PostMapping
-    public ResponseEntity<UserDto> createUser(@RequestBody @Validated(OnCreate.class) UserDto userDto) {
-        logger.info("POST request for user with '{}' username has been received.", userDto.getUsername());
-        User user = userMapper.toEntity(userDto);
-        userDto = userMapper.toDto(userService.create(user));
-        return new ResponseEntity<>(userDto, HttpStatus.CREATED);
     }
 
     @PutMapping
