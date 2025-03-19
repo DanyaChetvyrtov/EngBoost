@@ -1,8 +1,9 @@
-package app.first.myEng.engBoost.dto;
+package app.first.myEng.engBoost.dto.user;
 
 import app.first.myEng.engBoost.validation.OnCreate;
 import app.first.myEng.engBoost.validation.OnUpdate;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -15,6 +16,10 @@ import org.hibernate.validator.constraints.Length;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonPropertyOrder({
+        "id", "username", "firstName",
+        "lastName", "age", "email"
+})
 public class UserDto {
     @NotNull(message = "Id can't be null", groups = OnUpdate.class)
     private Integer id;
@@ -33,7 +38,7 @@ public class UserDto {
     private int age;
     @NotNull(message = "Email must be not null", groups = {OnCreate.class, OnUpdate.class})
     @Length(max = 150, message = "Max possible length is 150 chars", groups = {OnCreate.class, OnUpdate.class})
-    @Email(message = "Invalid email format")
+    @Email(message = "Invalid email format", groups = {OnCreate.class, OnUpdate.class})
     private String email;
 
     @NotNull(message = "Password can't be null", groups = {OnCreate.class, OnUpdate.class})

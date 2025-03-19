@@ -40,9 +40,9 @@ public class WordParser {
 
         List<SenseItem> senseItems = definitions == null ? null :
                 definitions.stream()
-                .findFirst().map(DefinitionItem::getSenseSequence)
-                .orElse(Collections.emptyList()).stream().map(List::getFirst)
-                .map(this::parseSenseItem).toList();
+                        .findFirst().map(DefinitionItem::getSenseSequence)
+                        .orElse(Collections.emptyList()).stream().map(List::getFirst)
+                        .map(this::parseSenseItem).toList();
 
         return new WordInfo.Builder()
                 .setWord(word)

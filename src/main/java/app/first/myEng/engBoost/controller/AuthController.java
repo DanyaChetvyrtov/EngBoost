@@ -35,13 +35,13 @@ public class AuthController {
 
     @PostMapping("/login")
     public JwtResponse login(@RequestBody JwtRequest loginRequest) {
-        logger.info("login request for user '{}'", loginRequest.getUsername());
+        logger.info("POST 'login' request for user '{}'", loginRequest.getUsername());
         return authService.login(loginRequest);
     }
 
     @PostMapping("/register")
     public ResponseEntity<UserDto> register(@RequestBody @Validated(OnCreate.class) UserDto userDto) {
-        logger.info("POST request for user with '{}' username has been received.", userDto.getUsername());
+        logger.info("POST 'register' request for user with '{}' username has been received.", userDto.getUsername());
         User user = userMapper.toEntity(userDto);
         userDto = userMapper.toDto(userService.create(user));
         return new ResponseEntity<>(userDto, HttpStatus.CREATED);
@@ -49,7 +49,7 @@ public class AuthController {
 
     @PostMapping("/refresh")
     public JwtResponse refresh(@RequestBody String refreshToken) {
-        logger.info("Refresh request.");
+        logger.info("POST 'refresh' request.");
         return authService.refresh(refreshToken);
     }
 }

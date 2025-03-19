@@ -36,6 +36,6 @@ public class WordCardClientDto {
     private List<ExampleDto> examples;
     private List<ShortDefinitionDto> shortDefinitions;
 
-    @NotNull(message = "Card can't be without owner. Set userId", groups = {OnCreate.class, OnUpdate.class})
+    @NotNull(message = "Owner(user) id must be not null. Set userId", groups = {OnCreate.class, OnUpdate.class})
     private Integer userId;
 }

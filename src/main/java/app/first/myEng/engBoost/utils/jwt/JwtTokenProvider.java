@@ -73,11 +73,12 @@ public class JwtTokenProvider {
     @SneakyThrows
     public JwtResponse refreshUserTokens(String refreshToken) {
         JwtResponse jwtResponse = new JwtResponse();
-        if (!isValid(refreshToken)) {
-            throw new AccessDeniedException("Access was denied");
-        }
+        if (!isValid(refreshToken))
+            throw new AccessDeniedException("Refresh was denied");
+
         Integer userId = Integer.valueOf(getId(refreshToken));
         User user = userService.getUserById(userId);
+
         jwtResponse.setId(userId);
         jwtResponse.setUsername(user.getUsername());
         jwtResponse.setAccessToken(
@@ -95,9 +96,7 @@ public class JwtTokenProvider {
                 .verifyWith(secretKey)
                 .build()
                 .parseSignedClaims(token);
-        return claims.getPayload()
-                .getExpiration()
-                .after(new Date());
+        return claims.getPayload().getExpiration().after(new Date());
     }
 
     private String getId(String token) {
@@ -122,13 +121,9 @@ public class JwtTokenProvider {
 
     public Authentication getAuthentication(String token) {
         String username = getUsername(token);
-        UserDetails userDetails = userDetailsService.loadUserByUsername(
-                username
-        );
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         return new UsernamePasswordAuthenticationToken(
-                userDetails,
-                "",
-                userDetails.getAuthorities()
+                userDetails, "", userDetails.getAuthorities()
         );
     }
 }
