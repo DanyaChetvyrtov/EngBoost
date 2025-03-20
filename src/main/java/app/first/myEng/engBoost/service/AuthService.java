@@ -3,9 +3,13 @@ package app.first.myEng.engBoost.service;
 import app.first.myEng.engBoost.dto.auth.JwtRequest;
 import app.first.myEng.engBoost.dto.auth.JwtResponse;
 import app.first.myEng.engBoost.models.user.User;
+import app.first.myEng.engBoost.utils.jwt.JwtEntity;
 import app.first.myEng.engBoost.utils.jwt.JwtTokenProvider;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -46,5 +50,14 @@ public class AuthService {
 
     public JwtResponse refresh(String refreshToken) {
         return jwtTokenProvider.refreshUserTokens(refreshToken);
+    }
+
+    public JwtEntity getCurrentUserInfo() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.getPrincipal() instanceof JwtEntity)
+            return (JwtEntity) authentication.getPrincipal();
+
+        throw new AuthenticationServiceException("User not authenticated.");
     }
 }

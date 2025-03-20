@@ -76,7 +76,7 @@ public class JwtTokenProvider {
         if (!isValid(refreshToken))
             throw new AccessDeniedException("Refresh was denied");
 
-        Integer userId = Integer.valueOf(getId(refreshToken));
+        Integer userId = getId(refreshToken);
         User user = userService.getUserById(userId);
 
         jwtResponse.setId(userId);
@@ -99,14 +99,14 @@ public class JwtTokenProvider {
         return claims.getPayload().getExpiration().after(new Date());
     }
 
-    private String getId(String token) {
+    private Integer getId(String token) {
         return Jwts
                 .parser()
                 .verifyWith(secretKey)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload()
-                .get("id", String.class);
+                .get("id", Integer.class);
     }
 
     private String getUsername(String token) {

@@ -1,6 +1,6 @@
 package app.first.myEng.engBoost.dto.wordCard;
 
-import app.first.myEng.engBoost.dto.UserDto;
+import app.first.myEng.engBoost.dto.user.UserShortDto;
 import app.first.myEng.engBoost.models.wordCard.WordTypeEntity;
 import app.first.myEng.engBoost.utils.WordTypeEntityDeserializer;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -31,5 +31,5 @@ public class WordCardExtendedDto {
     private List<ExampleDto> examples;
     private List<ShortDefinitionDto> shortDefinitions;
 
-    private UserDto cardOwner;
+    private UserShortDto cardOwner;
 }

@@ -1,30 +1,42 @@
 package app.first.myEng.engBoost.service;
 
 import app.first.myEng.engBoost.models.exception.ResourceNotFound;
+import app.first.myEng.engBoost.models.user.Role;
 import app.first.myEng.engBoost.models.user.User;
 import app.first.myEng.engBoost.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional(readOnly = true)
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
     private final static Logger logger = LoggerFactory.getLogger(UserService.class);
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+    }
+
+    public List<User> getUsers() {
+        return userRepository.findAll();
     }
 
     public User getUserById(int id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFound("User not found"));
     }
+
     public User getUserByUsername(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFound("User not found"));
@@ -33,6 +45,7 @@ public class UserService {
     @Transactional
     public User create(User user) {
         logger.info("Creating user. username: {}", user.getUsername());
+        user.setRoles(Set.of(Role.ROLE_USER));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
@@ -48,7 +61,7 @@ public class UserService {
         userDB.setAge(user.getAge());
         userDB.setUsername(user.getUsername());
         userDB.setEmail(user.getEmail());
-        userDB.setPassword(user.getPassword());
+        userDB.setPassword(passwordEncoder.encode(user.getPassword()));
 
         return userRepository.save(userDB);
     }
