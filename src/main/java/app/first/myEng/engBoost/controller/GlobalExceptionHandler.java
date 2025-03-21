@@ -3,6 +3,7 @@ package app.first.myEng.engBoost.controller;
 import app.first.myEng.engBoost.api.merriamwebster.model.exception.FailToFetchData;
 import app.first.myEng.engBoost.api.merriamwebster.model.exception.FailToParseData;
 import app.first.myEng.engBoost.models.exception.ExceptionBody;
+import app.first.myEng.engBoost.models.exception.InnerServerError;
 import app.first.myEng.engBoost.models.exception.ResourceNotFound;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import org.slf4j.Logger;
@@ -66,7 +67,7 @@ public class GlobalExceptionHandler {
         return new ExceptionBody(e.getMessage());
     }
 
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler({Exception.class, InnerServerError.class})
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ExceptionBody handleException(Exception e) {
         logger.error("Unknown error: ", e);

@@ -2,6 +2,7 @@ package app.first.myEng.engBoost.dto.user;
 
 import app.first.myEng.engBoost.validation.OnCreate;
 import app.first.myEng.engBoost.validation.OnUpdate;
+import app.first.myEng.engBoost.validation.UniqueUserField;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.validation.constraints.Email;
@@ -32,6 +33,7 @@ public class UserDto {
     private String lastName;
     @NotNull(message = "Username must be not null", groups = {OnCreate.class, OnUpdate.class})
     @Length(min = 10, max = 150, message = "Username must be in range between 10 and 150 chars", groups = {OnCreate.class, OnUpdate.class})
+    @UniqueUserField(fieldName = "username", message = "User with such username already exists", groups = {OnCreate.class, OnUpdate.class})
     private String username;
     @NotNull(message = "Age must be not null", groups = {OnCreate.class, OnUpdate.class})
     @Min(value = 6, message = "Age should be greater than 5")
@@ -39,6 +41,7 @@ public class UserDto {
     @NotNull(message = "Email must be not null", groups = {OnCreate.class, OnUpdate.class})
     @Length(max = 150, message = "Max possible length is 150 chars", groups = {OnCreate.class, OnUpdate.class})
     @Email(message = "Invalid email format", groups = {OnCreate.class, OnUpdate.class})
+    @UniqueUserField(fieldName = "email", message = "User with such email already exists", groups = {OnCreate.class, OnUpdate.class})
     private String email;
 
     @NotNull(message = "Password can't be null", groups = {OnCreate.class, OnUpdate.class})

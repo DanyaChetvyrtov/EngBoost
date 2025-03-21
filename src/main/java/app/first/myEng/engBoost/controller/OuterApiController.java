@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/v1/words/outer")
+@RequestMapping("api/v1/outer/words")
 public class OuterApiController {
     private final OuterApiService outerApiService;
     private final static Logger logger = LoggerFactory.getLogger(OuterApiController.class);
