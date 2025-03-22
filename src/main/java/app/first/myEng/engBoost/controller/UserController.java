@@ -1,6 +1,6 @@
 package app.first.myEng.engBoost.controller;
 
-import app.first.myEng.engBoost.dto.user.UserDto;
+import app.first.myEng.engBoost.dto.user.UserWriteDto;
 import app.first.myEng.engBoost.models.user.User;
 import app.first.myEng.engBoost.service.AuthService;
 import app.first.myEng.engBoost.service.UserService;
@@ -29,20 +29,20 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> getUser(@PathVariable("id") int id) {
+    public ResponseEntity<UserWriteDto> getUser(@PathVariable("id") int id) {
         logger.info("GET request for user with id '{}' has been received.", id);
-        UserDto userDto = userMapper.toDto(userService.getUserById(id));
-        return new ResponseEntity<>(userDto, HttpStatus.OK);
+        UserWriteDto userWriteDto = userMapper.toDto(userService.getUserById(id));
+        return new ResponseEntity<>(userWriteDto, HttpStatus.OK);
     }
 
     @PutMapping
-    @PreAuthorize("@customSecurityExpression.canAccessUser(#userDto.id)")
-    public ResponseEntity<UserDto> updateUser(@RequestBody @Validated(OnUpdate.class) UserDto userDto) {
-        logger.info("PUT request for user with '{}' username has been received.", userDto.getUsername());
+    @PreAuthorize("@customSecurityExpression.canAccessUser(#userWriteDto.id)")
+    public ResponseEntity<UserWriteDto> updateUser(@RequestBody @Validated(OnUpdate.class) UserWriteDto userWriteDto) {
+        logger.info("PUT request for user with '{}' username has been received.", userWriteDto.getUsername());
         logger.info("Request was received from {}", authService.getCurrentUserInfo().getUsername());
-        User user = userMapper.toEntity(userDto);
-        userDto = userMapper.toDto(userService.update(user));
-        return new ResponseEntity<>(userDto, HttpStatus.OK);
+        User user = userMapper.toEntity(userWriteDto);
+        userWriteDto = userMapper.toDto(userService.update(user));
+        return new ResponseEntity<>(userWriteDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

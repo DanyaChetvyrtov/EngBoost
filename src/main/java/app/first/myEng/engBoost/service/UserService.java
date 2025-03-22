@@ -6,12 +6,12 @@ import app.first.myEng.engBoost.models.user.User;
 import app.first.myEng.engBoost.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Set;
 
 @Service
@@ -26,8 +26,8 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public List<User> getUsers(Integer page, Integer size) {
-        return userRepository.findAll(PageRequest.of(page - 1, size)).getContent();
+    public Page<User> getUsers(Integer page, Integer size) {
+        return userRepository.findAll(PageRequest.of(page - 1, size));
     }
 
     public User getUserById(int id) {

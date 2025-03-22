@@ -2,7 +2,7 @@ package app.first.myEng.engBoost.controller;
 
 import app.first.myEng.engBoost.dto.auth.JwtRequest;
 import app.first.myEng.engBoost.dto.auth.JwtResponse;
-import app.first.myEng.engBoost.dto.user.UserDto;
+import app.first.myEng.engBoost.dto.user.UserWriteDto;
 import app.first.myEng.engBoost.models.user.User;
 import app.first.myEng.engBoost.service.AuthService;
 import app.first.myEng.engBoost.service.UserService;
@@ -40,11 +40,11 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserDto> register(@RequestBody @Validated(OnCreate.class) UserDto userDto) {
-        logger.info("POST 'register' request for user with '{}' username has been received.", userDto.getUsername());
-        User user = userMapper.toEntity(userDto);
-        userDto = userMapper.toDto(userService.create(user));
-        return new ResponseEntity<>(userDto, HttpStatus.CREATED);
+    public ResponseEntity<UserWriteDto> register(@RequestBody @Validated(OnCreate.class) UserWriteDto userWriteDto) {
+        logger.info("POST 'register' request for user with '{}' username has been received.", userWriteDto.getUsername());
+        User user = userMapper.toEntity(userWriteDto);
+        userWriteDto = userMapper.toDto(userService.create(user));
+        return new ResponseEntity<>(userWriteDto, HttpStatus.CREATED);
     }
 
     @PostMapping("/refresh")

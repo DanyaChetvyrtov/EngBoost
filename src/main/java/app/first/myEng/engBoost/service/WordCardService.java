@@ -8,11 +8,10 @@ import app.first.myEng.engBoost.repository.WordCardRepository;
 import app.first.myEng.engBoost.repository.WordTypeEntityRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -88,8 +87,8 @@ public class WordCardService {
         wordCardRepository.deleteById(id);
     }
 
-    public List<WordCard> getUserCards(String username) {
+    public Page<WordCard> getUserCards(Integer page, Integer size, String username) {
         logger.info("Receiving '{}' cards. ", username);
-        return wordCardRepository.findCardsByCardOwnerUsername(username).orElse(new ArrayList<>());
+        return wordCardRepository.findByCardOwnerUsername(username, PageRequest.of(page - 1, size));
     }
 }

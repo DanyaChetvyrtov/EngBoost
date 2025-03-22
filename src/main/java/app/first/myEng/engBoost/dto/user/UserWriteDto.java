@@ -21,7 +21,7 @@ import org.hibernate.validator.constraints.Length;
         "id", "username", "firstName",
         "lastName", "age", "email"
 })
-public class UserDto {
+public class UserWriteDto {
     @NotNull(message = "Id can't be null", groups = OnUpdate.class)
     private Integer id;
 

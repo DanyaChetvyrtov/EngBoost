@@ -1,4 +1,4 @@
-package app.first.myEng.engBoost.dto.wordCard;
+package app.first.myEng.engBoost.dto.wordCard.wordComponents;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

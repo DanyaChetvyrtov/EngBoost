@@ -1,9 +1,11 @@
 package app.first.myEng.engBoost.controller;
 
-import app.first.myEng.engBoost.dto.user.UserShortDto;
+import app.first.myEng.engBoost.dto.common.PageResponse;
+import app.first.myEng.engBoost.dto.user.UserListItemDto;
 import app.first.myEng.engBoost.models.user.User;
 import app.first.myEng.engBoost.service.UserService;
 import app.first.myEng.engBoost.utils.mapper.UserMapper;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,12 +27,18 @@ public class AdminController {
     }
 
     @GetMapping("/users")
-    public ResponseEntity<List<UserShortDto>> getUsers(
+    public ResponseEntity<PageResponse<UserListItemDto>> getUsers(
             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(value = "size", required = false, defaultValue = "5") Integer size
     ) {
-        List<User> users = userService.getUsers(page, size);
-        List<UserShortDto> userDtos = userMapper.toShortDtoList(users);
-        return new ResponseEntity<>(userDtos, HttpStatus.OK);
+        Page<User> usersPage = userService.getUsers(page, size);
+        List<UserListItemDto> userDtos = userMapper.toShortDtoList(usersPage.getContent());
+        PageResponse<UserListItemDto> response = new PageResponse<>(
+                userDtos,
+                usersPage.getTotalPages(),
+                usersPage.getTotalElements(),
+                page, size
+        );
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

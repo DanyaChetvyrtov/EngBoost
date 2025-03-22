@@ -27,4 +27,12 @@ public class CustomSecurityExpression {
         }
         return false;
     }
+
+    public boolean canAccessCard(Integer id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        JwtEntity user = (JwtEntity) authentication.getPrincipal();
+        Integer userId = user.getId();
+
+        return userId.equals(id);
+    }
 }

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @JsonPropertyOrder({
         "id", "username", "email"
 })
-public class UserShortDto {
+public class UserListItemDto {
     private Integer id;
     private String username;
     private String email;

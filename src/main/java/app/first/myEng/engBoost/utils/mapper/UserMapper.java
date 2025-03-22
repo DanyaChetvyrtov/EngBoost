@@ -1,7 +1,7 @@
 package app.first.myEng.engBoost.utils.mapper;
 
-import app.first.myEng.engBoost.dto.user.UserDto;
-import app.first.myEng.engBoost.dto.user.UserShortDto;
+import app.first.myEng.engBoost.dto.user.UserWriteDto;
+import app.first.myEng.engBoost.dto.user.UserListItemDto;
 import app.first.myEng.engBoost.models.user.User;
 import org.mapstruct.Mapper;
 
@@ -10,15 +10,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
-public interface UserMapper extends MainMapper<User, UserDto> {
+public interface UserMapper extends MainMapper<User, UserWriteDto> {
 
-    UserDto toDto(User user);
+    UserWriteDto toDto(User user);
 
-    UserShortDto toShortDto(User user);
+    UserListItemDto toShortDto(User user);
 
-    User toEntity(UserDto userDto);
+    User toEntity(UserWriteDto userWriteDto);
 
-    default List<UserShortDto> toShortDtoList(List<User> users) {
+    default List<UserListItemDto> toShortDtoList(List<User> users) {
         if(users == null) return Collections.emptyList();
 
         return users.stream()

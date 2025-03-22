@@ -1,5 +1,8 @@
 package app.first.myEng.engBoost.dto.wordCard;
 
+import app.first.myEng.engBoost.dto.wordCard.wordComponents.ExampleDto;
+import app.first.myEng.engBoost.dto.wordCard.wordComponents.ShortDefinitionDto;
+import app.first.myEng.engBoost.dto.wordCard.wordComponents.StemDto;
 import app.first.myEng.engBoost.models.wordCard.WordTypeEntity;
 import app.first.myEng.engBoost.utils.WordTypeEntityDeserializer;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;

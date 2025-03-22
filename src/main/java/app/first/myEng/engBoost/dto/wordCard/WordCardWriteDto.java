@@ -1,5 +1,8 @@
 package app.first.myEng.engBoost.dto.wordCard;
 
+import app.first.myEng.engBoost.dto.wordCard.wordComponents.ExampleDto;
+import app.first.myEng.engBoost.dto.wordCard.wordComponents.ShortDefinitionDto;
+import app.first.myEng.engBoost.dto.wordCard.wordComponents.StemDto;
 import app.first.myEng.engBoost.models.wordCard.WordTypeEntity;
 import app.first.myEng.engBoost.utils.WordTypeEntityDeserializer;
 import app.first.myEng.engBoost.validation.OnCreate;
@@ -16,7 +19,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class WordCardClientDto {
+public class WordCardWriteDto {
     @NotNull(message = "Id can't be null", groups = OnUpdate.class)
     private Integer id;
     @NotNull(message = "Word can't be null", groups = {OnCreate.class, OnUpdate.class})

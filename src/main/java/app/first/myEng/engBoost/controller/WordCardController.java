@@ -1,8 +1,9 @@
 package app.first.myEng.engBoost.controller;
 
-import app.first.myEng.engBoost.dto.wordCard.WordCardClientDto;
-import app.first.myEng.engBoost.dto.wordCard.WordCardDto;
-import app.first.myEng.engBoost.dto.wordCard.WordCardExtendedDto;
+import app.first.myEng.engBoost.dto.common.PageResponse;
+import app.first.myEng.engBoost.dto.wordCard.WordCardDetailsDto;
+import app.first.myEng.engBoost.dto.wordCard.WordCardListItemDto;
+import app.first.myEng.engBoost.dto.wordCard.WordCardWriteDto;
 import app.first.myEng.engBoost.models.wordCard.WordCard;
 import app.first.myEng.engBoost.service.WordCardService;
 import app.first.myEng.engBoost.utils.mapper.WordCardMapper;
@@ -10,8 +11,10 @@ import app.first.myEng.engBoost.validation.OnCreate;
 import app.first.myEng.engBoost.validation.OnUpdate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,26 +33,28 @@ public class WordCardController {
     }
 
     @GetMapping("/{word}")
-    public ResponseEntity<WordCardExtendedDto> getWordCard(@PathVariable("word") String word) {
+    public ResponseEntity<WordCardDetailsDto> getWordCard(@PathVariable("word") String word) {
         logger.info("GET request for card with '{}' word has been received.", word);
         WordCard wordCard = wordCardService.getWordCard(word);
         return new ResponseEntity<>(wordCardMapper.toExtendedDto(wordCard), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<WordCardExtendedDto> createWordCard(
-            @RequestBody @Validated(OnCreate.class) WordCardClientDto wordCardClientDto) {
-        logger.info("POST request for card with '{}' word has been received.", wordCardClientDto.getWord());
-        WordCard wordCard = wordCardMapper.toEntity(wordCardClientDto);
+    @PreAuthorize("@customSecurityExpression.canAccessCard(#wordCardWriteDto.userId)")
+    public ResponseEntity<WordCardDetailsDto> createWordCard(
+            @RequestBody @Validated(OnCreate.class) WordCardWriteDto wordCardWriteDto) {
+        logger.info("POST request for card with '{}' word has been received.", wordCardWriteDto.getWord());
+        WordCard wordCard = wordCardMapper.toEntity(wordCardWriteDto);
         wordCard = wordCardService.create(wordCard);
         return new ResponseEntity<>(wordCardMapper.toExtendedDto(wordCard), HttpStatus.CREATED);
     }
 
     @PutMapping
-    public ResponseEntity<WordCardExtendedDto> updateWordCard(
-            @RequestBody @Validated(OnUpdate.class) WordCardClientDto wordCardClientDto) {
-        logger.info("PUT request for card with id '{}' has been received.", wordCardClientDto.getId());
-        WordCard wordCard = wordCardMapper.toEntity(wordCardClientDto);
+    @PreAuthorize("@customSecurityExpression.canAccessCard(#wordCardWriteDto.userId)")
+    public ResponseEntity<WordCardDetailsDto> updateWordCard(
+            @RequestBody @Validated(OnUpdate.class) WordCardWriteDto wordCardWriteDto) {
+        logger.info("PUT request for card with id '{}' has been received.", wordCardWriteDto.getId());
+        WordCard wordCard = wordCardMapper.toEntity(wordCardWriteDto);
         wordCard = wordCardService.update(wordCard);
         return new ResponseEntity<>(wordCardMapper.toExtendedDto(wordCard), HttpStatus.OK);
     }
@@ -62,11 +67,21 @@ public class WordCardController {
     }
 
     @GetMapping("/{username}/word-cards")
-    public ResponseEntity<List<WordCardDto>> getWordCardByUsername(
+    public ResponseEntity<PageResponse<WordCardListItemDto>> getWordCardsByUsername(
+            @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+            @RequestParam(value = "size", required = false, defaultValue = "5") Integer size,
             @PathVariable("username") String username) {
         logger.info("GET request for user '{}' cards has been received.", username);
-        List<WordCardDto> wordCardExtendedDtos = wordCardMapper
-                .toDtoList(wordCardService.getUserCards(username));
-        return new ResponseEntity<>(wordCardExtendedDtos, HttpStatus.OK);
+
+        Page<WordCard> wordCardPage = wordCardService.getUserCards(page, size, username);
+        List<WordCardListItemDto> wordCardDtos = wordCardMapper.toShortDtoList(wordCardPage.getContent());
+
+        PageResponse<WordCardListItemDto> response = new PageResponse<>(
+                wordCardDtos,
+                wordCardPage.getTotalPages(),
+                wordCardPage.getTotalElements(),
+                page, size
+        );
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

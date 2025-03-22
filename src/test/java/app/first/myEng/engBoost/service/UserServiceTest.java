@@ -8,8 +8,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,6 +20,9 @@ import static org.mockito.Mockito.*;
 public class UserServiceTest {
     @Mock
     private UserRepository userRepository; // Мок репозитория
+
+    @Mock
+    private PasswordEncoder passwordEncoder;
 
     @InjectMocks
     private UserService userService; // Тестируемый сервис
@@ -38,9 +43,10 @@ public class UserServiceTest {
                 "johndoe",
                 30,
                 "john.doe@example.com",
+                Collections.emptySet(),
                 now,
                 now,
-                "password1243"
+                passwordEncoder.encode("password1243")
         );
         when(userRepository.findById(userId)).thenReturn(Optional.of(mockUser));
 
@@ -57,7 +63,7 @@ public class UserServiceTest {
         assertEquals("john.doe@example.com", result.getEmail());
         assertEquals(now, result.getCreatedAt());
         assertEquals(now, result.getUpdatedAt());
-        assertEquals("password1243", result.getPassword());
+        assertEquals(passwordEncoder.encode("password1243"), result.getPassword());
         verify(userRepository, times(1)).findById(userId); // Проверяем, что метод вызван 1 раз
     }
 
@@ -80,6 +86,7 @@ public class UserServiceTest {
                 "johndoe",
                 30,
                 "john.doe@example.com",
+                Collections.emptySet(),
                 null, // createdAt и updatedAt будут установлены автоматически
                 null,
                 "password123"
@@ -92,6 +99,7 @@ public class UserServiceTest {
                 "johndoe",
                 30,
                 "john.doe@example.com",
+                Collections.emptySet(),
                 LocalDateTime.now(),
                 LocalDateTime.now(),
                 "password123"
@@ -125,6 +133,7 @@ public class UserServiceTest {
                 "johndoe",
                 30,
                 "john.doe@example.com",
+                Collections.emptySet(),
                 LocalDateTime.now(),
                 LocalDateTime.now(),
                 "password123"
@@ -137,6 +146,7 @@ public class UserServiceTest {
                 "janesmith",
                 25,
                 "jane.smith@example.com",
+                Collections.emptySet(),
                 null, // createdAt и updatedAt не должны изменяться
                 null,
                 "newpassword123"
@@ -154,7 +164,7 @@ public class UserServiceTest {
         assertEquals("janesmith", result.getUsername());
         assertEquals(25, result.getAge());
         assertEquals("jane.smith@example.com", result.getEmail());
-        assertEquals("newpassword123", result.getPassword());
+        assertEquals(passwordEncoder.encode("newpassword123"), result.getPassword());
         assertNotNull(result.getCreatedAt()); // createdAt не должен измениться
         assertNotNull(result.getUpdatedAt()); // updatedAt должен обновиться
 
@@ -172,6 +182,7 @@ public class UserServiceTest {
                 "johndoe",
                 30,
                 "john.doe@example.com",
+                Collections.emptySet(),
                 LocalDateTime.now(),
                 LocalDateTime.now(),
                 "password123"
