@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -24,8 +25,11 @@ public class AdminController {
     }
 
     @GetMapping("/users")
-    public ResponseEntity<List<UserShortDto>> getUsers() {
-        List<User> users = userService.getUsers();
+    public ResponseEntity<List<UserShortDto>> getUsers(
+            @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+            @RequestParam(value = "size", required = false, defaultValue = "5") Integer size
+    ) {
+        List<User> users = userService.getUsers(page, size);
         List<UserShortDto> userDtos = userMapper.toShortDtoList(users);
         return new ResponseEntity<>(userDtos, HttpStatus.OK);
     }
