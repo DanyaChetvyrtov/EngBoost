@@ -14,7 +14,7 @@ public interface UserMapper extends MainMapper<User, UserWriteDto> {
 
     UserWriteDto toDto(User user);
 
-    UserListItemDto toShortDto(User user);
+    UserListItemDto toListItemDto(User user);
 
     User toEntity(UserWriteDto userWriteDto);
 
@@ -22,7 +22,7 @@ public interface UserMapper extends MainMapper<User, UserWriteDto> {
         if(users == null) return Collections.emptyList();
 
         return users.stream()
-                .map(this::toShortDto)
+                .map(this::toListItemDto)
                 .collect(Collectors.toList());
     }
 }

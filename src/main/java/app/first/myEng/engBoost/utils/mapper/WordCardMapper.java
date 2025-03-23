@@ -16,9 +16,9 @@ public interface WordCardMapper extends MainMapper<WordCard, WordCardDto> {
 
     WordCardDto toDto(WordCard wordCard);
 
-    WordCardListItemDto toShortDto(WordCard wordCard);
+    WordCardListItemDto toListItemDto(WordCard wordCard);
 
-    WordCardDetailsDto toExtendedDto(WordCard wordCard);
+    WordCardDetailsDto toDetailsDto(WordCard wordCard);
 
     WordCard toEntity(WordCardDetailsDto wordCardDetailsDto);
 
@@ -33,12 +33,12 @@ public interface WordCardMapper extends MainMapper<WordCard, WordCardDto> {
                 .collect(Collectors.toList());
     }
 
-    default List<WordCardListItemDto> toShortDtoList(List<WordCard> wordCards) {
+    default List<WordCardListItemDto> toListItemDtoList(List<WordCard> wordCards) {
         if (wordCards == null)
             return Collections.emptyList();
 
         return wordCards.stream()
-                .map(this::toShortDto)
+                .map(this::toListItemDto)
                 .collect(Collectors.toList());
     }
 }

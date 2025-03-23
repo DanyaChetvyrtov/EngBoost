@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -28,6 +29,12 @@ public class UserService {
 
     public Page<User> getUsers(Integer page, Integer size) {
         return userRepository.findAll(PageRequest.of(page - 1, size));
+    }
+
+    public List<User> searchUsersByUsername(String username) {
+        return userRepository.searchByUsernameContaining(username).orElseThrow(
+                () -> new ResourceNotFound("User with username " + username + " not found")
+        );
     }
 
     public User getUserById(int id) {

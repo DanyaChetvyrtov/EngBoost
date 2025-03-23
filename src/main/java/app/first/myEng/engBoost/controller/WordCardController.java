@@ -36,7 +36,7 @@ public class WordCardController {
     public ResponseEntity<WordCardDetailsDto> getWordCard(@PathVariable("word") String word) {
         logger.info("GET request for card with '{}' word has been received.", word);
         WordCard wordCard = wordCardService.getWordCard(word);
-        return new ResponseEntity<>(wordCardMapper.toExtendedDto(wordCard), HttpStatus.OK);
+        return new ResponseEntity<>(wordCardMapper.toDetailsDto(wordCard), HttpStatus.OK);
     }
 
     @PostMapping
@@ -46,7 +46,7 @@ public class WordCardController {
         logger.info("POST request for card with '{}' word has been received.", wordCardWriteDto.getWord());
         WordCard wordCard = wordCardMapper.toEntity(wordCardWriteDto);
         wordCard = wordCardService.create(wordCard);
-        return new ResponseEntity<>(wordCardMapper.toExtendedDto(wordCard), HttpStatus.CREATED);
+        return new ResponseEntity<>(wordCardMapper.toDetailsDto(wordCard), HttpStatus.CREATED);
     }
 
     @PutMapping
@@ -56,7 +56,7 @@ public class WordCardController {
         logger.info("PUT request for card with id '{}' has been received.", wordCardWriteDto.getId());
         WordCard wordCard = wordCardMapper.toEntity(wordCardWriteDto);
         wordCard = wordCardService.update(wordCard);
-        return new ResponseEntity<>(wordCardMapper.toExtendedDto(wordCard), HttpStatus.OK);
+        return new ResponseEntity<>(wordCardMapper.toDetailsDto(wordCard), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
@@ -74,7 +74,7 @@ public class WordCardController {
         logger.info("GET request for user '{}' cards has been received.", username);
 
         Page<WordCard> wordCardPage = wordCardService.getUserCards(page, size, username);
-        List<WordCardListItemDto> wordCardDtos = wordCardMapper.toShortDtoList(wordCardPage.getContent());
+        List<WordCardListItemDto> wordCardDtos = wordCardMapper.toListItemDtoList(wordCardPage.getContent());
 
         PageResponse<WordCardListItemDto> response = new PageResponse<>(
                 wordCardDtos,
@@ -83,5 +83,15 @@ public class WordCardController {
                 page, size
         );
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<WordCardListItemDto>> getWords(
+            @RequestParam(value = "keyword") String keyword
+    ) {
+        logger.info("GET request for searching buy '{}' keyword", keyword);
+        List<WordCard> wordCards = wordCardService.searchWordCard(keyword);
+        List<WordCardListItemDto> wordCardDtos = wordCardMapper.toListItemDtoList(wordCards);
+        return new ResponseEntity<>(wordCardDtos, HttpStatus.OK);
     }
 }
