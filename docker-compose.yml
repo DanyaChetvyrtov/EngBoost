@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   app:
-    build: danilchet/eng_boost
+    image: danilchet/eng_boost
     ports:
       - "8080:8080"
     depends_on:
