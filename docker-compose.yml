@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/mydb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_JPA_HIBERNATE_DDL-AUTO=update
+      - MERRIAM_WEBSTER_URL=https://dictionaryapi.com/api/v3/references/sd3/json
+      - MERRIAM_WEBSTER_API_KEY=${MERRIAM_WEBSTER_API_KEY}
+      - THESAURUS_URL=${THESAURUS_URL}
+      - THESAURUS_API_KEY=${THESAURUS_API_KEY}
+      - DB_NAME=${DB_NAME}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ACCESS_DURATION=${JWT_ACCESS_DURATION}
+      - JWT_REFRESH_DURATION=${JWT_REFRESH_DURATION}
+
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=mydb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5439:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:

@@ -12,10 +12,14 @@ spring:
       adjust-dates-to-context-time-zone: true
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/${DB_NAME}
+  #    url: jdbc:postgresql://localhost:5432/${DB_NAME}
+  #    driver-class-name: org.postgresql.Driver
+  #    username: ${DB_USERNAME}
+  #    password: ${DB_PASSWORD}
+    url: jdbc:postgresql://localhost:5439/mydb
     driver-class-name: org.postgresql.Driver
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    username: postgres
+    password: postgres
   jpa:
     properties:
       hibernate:
@@ -43,7 +47,7 @@ logging:
 
 server:
   port:
-    8014
+    8080
 
 api:
   properties:
